@@ -38,8 +38,27 @@ class NoteController extends Controller
         return $note;
     }
 
-    public function update($id)
+    public function update(Request $request, Note $note)
     {
+        //Validar dados de entrega
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'nullable|string',
+            'image' => 'nullable|image|max:2048'
+        ]);
+
+        //Verificar se há imagem
+        if ($request->hasFile('image')) {
+            //Apagar imagem
+            if ($note->image_path) {
+                Storage::disk('public')->delete($note->image_path);
+            }
+            $data['image_path'] = $request->file('image')->store('notes', 'public');
+        }
+
+        $note->update($data);
+        return response()->json($note);
+
     }
 
     public function destroy(Note $note)
