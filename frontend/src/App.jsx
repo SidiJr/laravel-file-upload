@@ -12,7 +12,9 @@ export default function App() {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800">Notas Rápidas</h1>
           <button
-            onClick={() => document.getElementById("note-form").scrollIntoView()}
+            onClick={() =>
+              document.getElementById("note-form").scrollIntoView()
+            }
             className="bg-blue-600 text-white rounded-full px-4 py-2 font-medium hover:bg-blue-700"
           >
             + Nova
@@ -21,7 +23,7 @@ export default function App() {
         <div id="note-form">
           <NoteForm onNoteCreated={toggleRefresh} />
         </div>
-        <NoteList refresh={refresh} />
+        <NoteList refresh={refresh} toggleRefresh={toggleRefresh} />
       </div>
     </div>
   );
