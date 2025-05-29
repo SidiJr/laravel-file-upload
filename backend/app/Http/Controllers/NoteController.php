@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class NoteController extends Controller
 {
@@ -32,15 +33,23 @@ class NoteController extends Controller
         return response()->json($note, '201');
     }
 
-    public function show($id)
+    public function show(Note $note)
     {
+        return $note;
     }
 
     public function update($id)
     {
     }
 
-    public function destroy($id)
+    public function destroy(Note $note)
     {
+        //Apagar imagem
+        if ($note->image_path) {
+            Storage::disk('public')->delete($note->image_path);
+        }
+
+        $note->delete();
+        return response()->noContent();
     }
 }
